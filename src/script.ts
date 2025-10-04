@@ -1,16 +1,20 @@
 export class Game {
   selectors = {
     root: '[data-js-game]',
-    number: '[data-js-game-number]',
+    overlay: '[data-js-game-overlay]',
+  }
+
+  stateClasses = {
+    isActive: 'active',
   }
 
   rootElement: HTMLElement | null;
-  numberElement: HTMLElement | null;
+  overlayElement: HTMLElement | null;
   board: (0 | 2 | 4 | 8 | 16 | 32 | 64 | 128 | 256 | 512 | 1024 | 2048)[][];
 
   constructor() {
     this.rootElement = document.querySelector(this.selectors.root)
-    this.numberElement = document.querySelector(this.selectors.number)
+    this.overlayElement = document.querySelector(this.selectors.overlay)
     this.board = [
       [0, 0, 0, 0],
       [0, 0, 0, 0],
@@ -18,7 +22,7 @@ export class Game {
       [0, 0, 0, 0],
     ]
 
-    this.render()
+    this.addRandomCell()
     this.addRandomCell()
     this.bindEvents()
   }
@@ -57,6 +61,17 @@ export class Game {
   }
 
   isGameOver() {
+    this.board.forEach(row => {
+      if (row.includes(0)) { //&& есть одинаковые числа рядом друг с другом
+        return
+      } else {
+        this.showModal()
+      }
+    })
+  }
+
+  showModal() {
+    this.overlayElement?.classList.add(this.stateClasses.isActive)
   }
 
   render() {
