@@ -18,6 +18,7 @@ export class Game {
       [0, 0, 0, 0],
     ]
 
+    this.render()
     this.addRandomCell()
     this.bindEvents()
   }
@@ -59,7 +60,20 @@ export class Game {
   }
 
   render() {
+    if (!this.rootElement) return;
+    this.rootElement.innerHTML = '';
 
+    this.board.forEach((row) => {
+      row.forEach((cell) => {
+        const cellDiv = document.createElement('div');
+        cellDiv.classList.add('game-element');
+        if (cell !== 0) {
+          cellDiv.classList.add(`game--${cell}`);
+          cellDiv.textContent = cell.toString();
+        }
+        this.rootElement?.appendChild(cellDiv)
+      })
+    })
     this.isGameOver()
   }
 
