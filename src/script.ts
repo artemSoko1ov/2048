@@ -2,6 +2,7 @@ export class Game {
   selectors = {
     root: '[data-js-game]',
     overlay: '[data-js-game-overlay]',
+    buttonRestart: '[data-js-game-button-restart]',
   }
 
   stateClasses = {
@@ -10,11 +11,13 @@ export class Game {
 
   rootElement: HTMLElement | null;
   overlayElement: HTMLElement | null;
+  buttonRestartElement: HTMLElement | null;
   board: number[][];
 
   constructor() {
     this.rootElement = document.querySelector(this.selectors.root)
     this.overlayElement = document.querySelector(this.selectors.overlay)
+    this.buttonRestartElement = document.querySelector(this.selectors.buttonRestart)
     this.board = [
       [0, 0, 0, 0],
       [0, 0, 0, 0],
@@ -81,9 +84,10 @@ export class Game {
     });
 
     if (moved) {
-      setTimeout(() => this.addRandomCell(), 100);
+      setTimeout(() => {
+        this.addRandomCell();
+      }, 150);
     }
-    setTimeout(() => this.render(), 100);
   }
 
   moveRight = () => {
@@ -105,11 +109,42 @@ export class Game {
   }
 
   isGameOver() {
-    this.showModal()
+    const hasEmpty = this.board.some(row => row.includes(0));
+    if (hasEmpty) return;
+
+    for (let row = 0; row < 4; row++) {
+      for (let col = 0; col < 3; col++) {
+        if (this.board[row][col] === this.board[row][col + 1]) {
+          return;
+        }
+      }
+    }
+
+    for (let col = 0; col < 4; col++) {
+      for (let row = 0; row < 3; row++) {
+        if (this.board[row][col] === this.board[row + 1][col]) {
+          return;
+        }
+      }
+    }
+
+    setTimeout(() => this.showModal(), 300);
   }
 
   showModal() {
     this.overlayElement?.classList.add(this.stateClasses.isActive)
+  }
+
+  clearBoard = () => {
+    this.board = [
+      [0, 0, 0, 0],
+      [0, 0, 0, 0],
+      [0, 0, 0, 0],
+      [0, 0, 0, 0],
+    ]
+    this.addRandomCell()
+    this.addRandomCell()
+    this.overlayElement?.classList.remove(this.stateClasses.isActive)
   }
 
   render() {
@@ -147,5 +182,6 @@ export class Game {
           break;
       }
     });
+    this.buttonRestartElement?.addEventListener('click', this.clearBoard)
   }
 }
