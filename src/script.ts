@@ -10,7 +10,7 @@ export class Game {
 
   rootElement: HTMLElement | null;
   overlayElement: HTMLElement | null;
-  board: (0 | 2 | 4 | 8 | 16 | 32 | 64 | 128 | 256 | 512 | 1024 | 2048)[][];
+  board: number[][];
 
   constructor() {
     this.rootElement = document.querySelector(this.selectors.root)
@@ -47,27 +47,65 @@ export class Game {
     this.render()
   }
 
+  transpose(board: number[][]) {
+    return board[0].map((_, i) => board.map(row => row[i]));
+  }
+
   moveLeft = () => {
-    this.addRandomCell()
+    let moved = false;
+
+    this.board = this.board.map((row) => {
+      const original = [...row];
+
+      let filtered = row.filter(v => v !== 0);
+
+      for (let i = 0; i < filtered.length - 1; i++) {
+        if (filtered[i] === filtered[i + 1]) {
+          filtered[i] = filtered[i] * 2;
+          filtered[i + 1] = 0;
+        }
+      }
+
+      filtered = filtered.filter(v => v !== 0);
+
+      while (filtered.length < 4) filtered.push(0);
+
+      for (let i = 0; i < 4; i++) {
+        if (filtered[i] !== original[i]) {
+          moved = true;
+          break;
+        }
+      }
+
+      return filtered;
+    });
+
+    if (moved) {
+      setTimeout(() => this.addRandomCell(), 100);
+    }
+    setTimeout(() => this.render(), 100);
   }
+
   moveRight = () => {
-    this.addRandomCell()
+    this.board = this.board.map(row => row.reverse());
+    this.moveLeft();
+    this.board = this.board.map(row => row.reverse());
   }
+
   moveUp = () => {
-    this.addRandomCell()
+    this.board = this.transpose(this.board);
+    this.moveLeft();
+    this.board = this.transpose(this.board);
   }
+
   moveDown = () => {
-    this.addRandomCell()
+    this.board = this.transpose(this.board);
+    this.moveRight();
+    this.board = this.transpose(this.board);
   }
 
   isGameOver() {
-    this.board.forEach(row => {
-      if (row.includes(0)) { //&& есть одинаковые числа рядом друг с другом
-        return
-      } else {
-        this.showModal()
-      }
-    })
+    this.showModal()
   }
 
   showModal() {
