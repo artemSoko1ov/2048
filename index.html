@@ -9,14 +9,23 @@
   <body>
   <section class="game">
     <h1 class="game__header">2048</h1>
-    <p class="game__description">Чтобы играть...</p>
-    <div class="game__container" data-js-game>
 
-    </div>
+    <p class="game__description">
+       <strong>Цель:</strong> соединяй одинаковые плитки, чтобы получить число <strong>2048</strong>!<br>
+      <strong>Управление:</strong> стрелки на клавиатуре (<kbd>←</kbd> <kbd>↑</kbd> <kbd>→</kbd> <kbd>↓</kbd>).<br>
+      Каждое движение сдвигает все плитки в выбранную сторону. Если две одинаковые плитки касаются — они объединяются!<br>
+    </p>
+
+    <div class="game__container" data-js-game></div>
   </section>
+
   <div class="overlay" data-js-game-overlay>
     <div class="modal">
-      <h1 class="modal-title">Game over</h1>
+      <h1 class="modal-title">Game Over</h1>
+      <p class="modal-text">
+        Не расстраивайся — попробуй ещё раз!
+      </p>
+      <br>
       <button
         class="modal-button"
         type="button"

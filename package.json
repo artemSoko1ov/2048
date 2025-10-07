@@ -7,10 +7,12 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "lint:fix": "eslint src --ext .js,.jsx --fix"
+    "lint:fix": "eslint src --ext .js,.jsx --fix",
+    "deploy": "gh-pages -d dist"
   },
   "devDependencies": {
     "eslint": "^9.36.0",
+    "gh-pages": "^6.3.0",
     "sass": "^1.93.2",
     "typescript": "~5.9.3",
     "vite": "^7.1.7"

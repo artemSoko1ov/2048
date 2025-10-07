@@ -61,9 +61,8 @@ body {
     align-items: center;
     border-radius: 8px;
     transition: all 0.2s ease-in-out;
-//    animation: pop 0.2s ease-in-out;
+    animation: pop 0.2s ease-in-out;
 
-    // Каждое значение — свой цвет
     &.game--2 {
       background: #eee4da;
       color: #776e65;
